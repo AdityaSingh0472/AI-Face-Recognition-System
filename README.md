@@ -1,43 +1,87 @@
 # AI Face Recognition System
 
-An AI-based Face Recognition System that performs real-time face detection and recognition, detects emotions using DeepFace, automatically marks attendance in a CSV file, and sends email alerts.
-
+An advanced AI-based Face Recognition System that performs real-time face detection, emotion analysis, automated attendance tracking (Entry/Exit), and security monitoring with email alerts. The system is fully deployed as an executable (.exe) application for real-world use.
 ---
 
 ## Features
 
-* Real-time Face Detection
-* Face Recognition
-* Emotion Detection using DeepFace
-* Automatic Attendance Tracking (CSV)
-* Email Notification System
+### Face Recognition System
+- Real-time face detection using camera
+- Accurate face matching with trained dataset
+
+### Emotion Detection
+- Detects user emotions using DeepFace
+- Enables smart interaction based on emotion
+
+### Smart Attendance System
+- Entry (IN) and Exit (OUT) tracking
+- Stores attendance in CSV file
+
+### Voice Interaction
+- “Welcome [Name]” on entry
+- “Goodbye [Name]” on exit
+- “Please smile” guidance
+
+### Unknown Person Alert System
+- Captures images of unknown person
+- Sends email alerts with attachments
+
+### System Configuration Checker
+- Checks:
+  - RAM
+  - CPU
+  - GPU
+  - OS
+  - Camera availability
+- Shows warning if system requirements are not met
+
+### Auto Camera Control
+- Camera closes automatically after attendance
+- Optimized performance
+
+### EXE Deployment (Major Update 🔥)
+- Project converted into executable (.exe)
+- No need for Python installation
+- Stable ONEDIR deployment
+- Previous EXE errors fixed
 
 ---
 
-## Technologies Used
+## 🆕 Major Improvements Over Previous Version
 
-* Python
-* OpenCV
-* NumPy
-* DeepFace
-* Machine Learning
+| Feature                     | Previous Version ❌                     | Updated Version ✅                          |
+|---------------------------|----------------------------------------|---------------------------------------------|
+| Attendance System          | Basic attendance only                  | Entry (IN) & Exit (OUT) tracking implemented |
+| Voice Interaction          | Not available                          | Smart voice feedback (Welcome/Goodbye)       |
+| System Configuration Check | Not available                          | Hardware validation (CPU, RAM, Camera, etc.) |
+| EXE Deployment             | Unstable / Not working properly        | Fully stable and functional (.exe supported) |
+| Camera Handling            | Continuous running                     | Auto start & auto stop optimized             |
+| User Experience            | Basic and non-interactive              | Interactive, user-friendly system            |
+
+🛠 Technologies Used
+
+- Python
+- OpenCV
+- face_recognition
+- DeepFace
+- SQLite
+- Pyttsx3 (Text-to-Speech)
+- PyInstaller (for EXE deployment)
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
-```
 AI-Face-Recognition-System/
 │
-├── dataset/                # Stored face images
-├── trainer/                # Trained model files
-├── attendance.csv          # Attendance data
-├── main.py                 # Main program file
-├── face_recognition.py     # Recognition logic
-├── emotion_detection.py    # Emotion detection logic
+├── dataset/
+├── model.pkl
+├── database.db
+├── face_recognition_live.py
+├── system_check_module.py
+├── utils.py
+├── train_model.py
 └── README.md
-├── database.db             # Stores user data
-```
 
 ---
 
@@ -65,36 +109,45 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the main file:
+🔹 Run via Python
 
 ```
-python main.py
+python face_recognition_live.py
 ```
 
-* System will start camera
-* Detect and recognize faces
-* Track attendance automatically
-* Send email alerts
+- The system initializes and performs a system configuration check  
+- The camera starts automatically for real-time face detection  
+- Faces are detected and recognized using the trained model  
+- Emotion is analyzed to enable smart interaction  
+- Attendance is automatically marked as Entry (IN) or Exit (OUT)  
+- Voice feedback is provided (Welcome / Goodbye / Please smile)  
+- If an unknown person is detected, images are captured and an email alert is sent  
+- The camera automatically closes after completing the process  
 
 ---
 
 ## Output
 
-* Face detection with bounding box
-* Name recognition
-* Emotion display
-* Attendance stored in CSV file
+Face detection with bounding box
+Name recognition
+Emotion display
+Voice feedback
+Attendance tracking
+Email alerts for unknown person
 
 ---
 
-## Future Improvements
 
-* Web-based dashboard
-* Database integration
-* Mobile app support
-* Improved accuracy using deep learning models
+## Future Enhancements
+Web-based dashboard
+Cloud database integration
+Mobile application
+Multi-camera support
+Advanced analytics
 
 ---
+
+
 
 ## Author
 
@@ -104,4 +157,10 @@ Aditya Singh
 
 ## Note
 
-This project is developed for learning and internship purposes.
+👨‍💻 Author
+
+Aditya Singh
+
+📌 Note
+
+This project was initially developed as a basic system and later enhanced with advanced features, improved performance, and full deployment support as part of an internship project.

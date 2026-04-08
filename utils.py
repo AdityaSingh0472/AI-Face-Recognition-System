@@ -68,9 +68,9 @@ def mark_entry_exit(name):
 
 #EMAIL ALERT (5 IMAGES)
 def send_alert(image_paths):
-    sender_email = "your_email@gmail.com"
-    app_password = "your_app_password"
-    receiver_email = "admin@gmail.com"
+    sender_email = "aditya.singh0472@gmail.com"
+    app_password = "ultjulyjzbgzlxgn"
+    receiver_email = "singh.aditya4714@gmail.com"
 
     msg = EmailMessage()
     msg['Subject'] = "🚨 Unknown Person Detected"
