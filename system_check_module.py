@@ -4,24 +4,22 @@ import cv2
 import tkinter as tk
 from tkinter import messagebox
 import sys
-import subprocess
 
-# GPU HARDWARE CHECK
+# OPTIONAL GPU CHECK (NO WMIC)
 
 def get_gpu_info():
     try:
-        output = subprocess.check_output(
-            "wmic path win32_VideoController get name", shell=True
-        )
-        gpu_list = output.decode().split("\n")[1:]
-        gpu_list = [gpu.strip() for gpu in gpu_list if gpu.strip()]
-        return ", ".join(gpu_list) if gpu_list else "Not Detected"
+        import GPUtil
+        gpus = GPUtil.getGPUs()
+        if gpus:
+            return ", ".join([gpu.name for gpu in gpus])
+        else:
+            return "Not Detected"
     except:
         return "Not Detected"
 
 
-# GPU CUDA CHECK (AI)
-
+# CUDA CHECK (AI)
 try:
     import torch
     cuda_available = torch.cuda.is_available()
@@ -33,9 +31,7 @@ def run_system_check():
     root = tk.Tk()
     root.withdraw()
 
-    
     # SYSTEM CHECK
-
 
     # RAM
     ram = psutil.virtual_memory().total / (1024 ** 3)
@@ -56,9 +52,7 @@ def run_system_check():
     # GPU
     gpu_name = get_gpu_info()
 
-    
     # RECOMMENDED SPECS
-    
     recommended = {
         "RAM": "8 GB",
         "CPU": "Intel i5 / Ryzen 5",
@@ -68,9 +62,7 @@ def run_system_check():
         "Camera": "Required"
     }
 
-    
     # CURRENT SPECS
-    
     current = {
         "RAM": f"{ram:.2f} GB",
         "CPU": cpu,
@@ -80,13 +72,11 @@ def run_system_check():
         "Camera": "Available" if camera_available else "Not Found"
     }
 
-    
     # CHECK ISSUES
-    
     issues = []
 
     if ram < 4:
-        issues.append(f"Low RAM: {ram:.2f} GB (Minimum 4GB required)")
+        issues.append(f"Low RAM: {ram:.2f} GB (Minimum 4GB recommended)")
 
     if not camera_available:
         issues.append("Webcam not detected")
@@ -95,11 +85,9 @@ def run_system_check():
         issues.append(f"Unsupported OS: {os_name}")
 
     if not cuda_available:
-        issues.append("GPU acceleration not available (may run slower)")
+        issues.append("GPU acceleration not available (system may run slower)")
 
-    
     # DISPLAY MESSAGE
-    
     spec_message = "📊 SYSTEM SPECIFICATIONS\n\n"
 
     spec_message += "👉 Current System:\n"
@@ -110,9 +98,7 @@ def run_system_check():
     for k, v in recommended.items():
         spec_message += f"{k}: {v}\n"
 
-    
     # FINAL DECISION
-    
     if issues:
         issue_text = "\n".join(issues)
 

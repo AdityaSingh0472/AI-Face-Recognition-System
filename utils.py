@@ -4,7 +4,7 @@ import smtplib
 from email.message import EmailMessage
 import os
 
-#DATABASE FUNCTIONS
+# DATABASE FUNCTIONS
 def create_db():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
@@ -42,7 +42,7 @@ def get_user(name):
     return data
 
 
-#ENTRY–EXIT SYSTEM
+# ENTRY–EXIT SYSTEM
 def mark_entry_exit(name):
     today = datetime.now().strftime("%Y-%m-%d")
     time_now = datetime.now().strftime("%H:%M:%S")
@@ -66,18 +66,27 @@ def mark_entry_exit(name):
         print("Exit marked")
 
 
-#EMAIL ALERT (5 IMAGES)
+# EMAIL ALERT (5 IMAGES)
 def send_alert(image_paths):
     sender_email = "aditya.singh0472@gmail.com"
+
+    # ⚠️ Better: use environment variable (recommended)
+    # app_password = os.getenv("EMAIL_PASSWORD")
+
+    # Temporary (for testing/demo)
     app_password = "ultjulyjzbgzlxgn"
-    receiver_email = "singh.aditya4714@gmail.com"
+
+    # ✅ Updated receiver email (as per sir)
+    receiver_email = "info@innosewa.com"
 
     msg = EmailMessage()
     msg['Subject'] = "🚨 Unknown Person Detected"
     msg['From'] = sender_email
     msg['To'] = receiver_email
 
-    msg.set_content("Unknown person detected. Images attached.")
+    msg.set_content(
+        "Alert: An unknown person has been detected.\n\nAttached images are included for verification."
+    )
 
     try:
         for image_path in image_paths:
@@ -86,7 +95,14 @@ def send_alert(image_paths):
                     file_data = f.read()
                     file_name = os.path.basename(image_path)
 
-                msg.add_attachment(file_data, maintype='image', subtype='jpeg', filename=file_name)
+                msg.add_attachment(
+                    file_data,
+                    maintype='image',
+                    subtype='jpeg',
+                    filename=file_name
+                )
+
+        print("📧 Sending email to:", receiver_email)
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(sender_email, app_password)
