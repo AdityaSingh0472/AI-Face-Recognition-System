@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import messagebox
 import sys
 
-# OPTIONAL GPU CHECK (NO WMIC)
+#  GPU CHECK
 
 def get_gpu_info():
     try:
@@ -19,7 +19,7 @@ def get_gpu_info():
         return "Not Detected"
 
 
-# CUDA CHECK (AI)
+# CUDA CHECK 
 try:
     import torch
     cuda_available = torch.cuda.is_available()
@@ -88,13 +88,13 @@ def run_system_check():
         issues.append("GPU acceleration not available (system may run slower)")
 
     # DISPLAY MESSAGE
-    spec_message = "📊 SYSTEM SPECIFICATIONS\n\n"
+    spec_message = "SYSTEM SPECIFICATIONS\n\n"
 
-    spec_message += "👉 Current System:\n"
+    spec_message += "Current System:\n"
     for k, v in current.items():
         spec_message += f"{k}: {v}\n"
 
-    spec_message += "\n👉 Recommended:\n"
+    spec_message += "\n Recommended:\n"
     for k, v in recommended.items():
         spec_message += f"{k}: {v}\n"
 

@@ -4,7 +4,8 @@ import smtplib
 from email.message import EmailMessage
 import os
 
-# DATABASE FUNCTIONS
+
+# ===== DATABASE FUNCTIONS =====
 def create_db():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
@@ -42,42 +43,45 @@ def get_user(name):
     return data
 
 
-# ENTRY–EXIT SYSTEM
+#  EVENT-BASED ATTENDANCE SYSTEM
 def mark_entry_exit(name):
     today = datetime.now().strftime("%Y-%m-%d")
     time_now = datetime.now().strftime("%H:%M:%S")
 
-    try:
-        with open("attendance.csv", "r") as f:
-            lines = f.readlines()
-    except:
-        lines = []
+    # Create file if not exists
+    if not os.path.exists("attendance.csv"):
+        with open("attendance.csv", "w") as f:
+            f.write("Name,Date,Status,Time\n")
 
+    with open("attendance.csv", "r") as f:
+        lines = f.readlines()
+
+    # Filter today's records of this user
     user_today = [line for line in lines if name in line and today in line]
 
+    # EVENT-BASED LOGIC
     if len(user_today) == 0:
-        with open("attendance.csv", "a") as f:
-            f.write(f"{name},{today},IN,{time_now}\n")
-        print("Entry marked")
+        status = "IN"
+    else:
+        last_entry = user_today[-1]
+        if "IN" in last_entry:
+            status = "OUT"
+        else:
+            status = "IN"
 
-    elif len(user_today) == 1:
-        with open("attendance.csv", "a") as f:
-            f.write(f"{name},{today},OUT,{time_now}\n")
-        print("Exit marked")
+    # Save attendance
+    with open("attendance.csv", "a") as f:
+        f.write(f"{name},{today},{status},{time_now}\n")
+
+    print(f"{status} marked ✔️")
+    return status
 
 
-# EMAIL ALERT (5 IMAGES)
+# EMAIL ALERT SYSTEM
 def send_alert(image_paths):
     sender_email = "aditya.singh0472@gmail.com"
-
-    # ⚠️ Better: use environment variable (recommended)
-    # app_password = os.getenv("EMAIL_PASSWORD")
-
-    # Temporary (for testing/demo)
-    app_password = "ultjulyjzbgzlxgn"
-
-    # ✅ Updated receiver email (as per sir)
-    receiver_email = "info@innosewa.com"
+    app_password = "ultjulyjzbgzlxgn"   #  Demo use only
+    receiver_email = "singh.aditya4714@gmail.com"
 
     msg = EmailMessage()
     msg['Subject'] = "🚨 Unknown Person Detected"
@@ -85,7 +89,7 @@ def send_alert(image_paths):
     msg['To'] = receiver_email
 
     msg.set_content(
-        "Alert: An unknown person has been detected.\n\nAttached images are included for verification."
+        "Alert: Unknown person detected.\n\nAttached images are included for verification."
     )
 
     try:
@@ -102,13 +106,13 @@ def send_alert(image_paths):
                     filename=file_name
                 )
 
-        print("📧 Sending email to:", receiver_email)
+        print("📧 Sending email...")
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(sender_email, app_password)
             smtp.send_message(msg)
 
-        print("✅ Email sent successfully (5 images)")
+        print("✅ Email sent successfully")
 
     except Exception as e:
         print("❌ Email failed:", e)
